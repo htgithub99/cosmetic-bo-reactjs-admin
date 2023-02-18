@@ -1,33 +1,49 @@
+@import "assets/variables.scss";
+@import "assets/mixin.scss";
 .sideNav {
-  background: #fff;
-  border-right: 1px solid #f0f0f0;
+  background: $bg-side-nav;
+  border-right: 1px solid $bg-side-nav;
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
+  transition: all 0.5s ease 0s;
+  width: 250px;
+
+  @include customScrollBar();
+
   :global {
     .ant-menu-inline,
     .ant-menu-vertical,
     .ant-menu-vertical-left {
       border: none;
     }
+
     .anticon {
       width: 12px;
     }
+
+    span.material-symbols-outlined {
+      cursor: pointer;
+      color: $white-color;
+    }
   }
 
-  .logo {
-    display: block;
-    height: 65px;
+  .wrapLogo {
     width: 100%;
     font-size: 20px;
-    font-weight: bold;
-    color: #1890ff !important;
-    padding: 20px;
+    margin: 25px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    img {
+      width: 150px;
+      height: 55px;
+    }
   }
 }
 
 .sideNavCollapsed {
-  .logo {
-    font-size: 12px;
-  }
+  width: 80px;
+  transition: all 0.5s ease 0s;
 }

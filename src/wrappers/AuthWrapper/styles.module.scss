@@ -1,12 +1,13 @@
 .pageWrapper {
   height: 100vh;
+  display: flex;
 }
 .mainWrapper {
   height: 100%;
+  flex: 1;
 }
 .pageContent {
+  flex: 1;
   overflow: auto;
-  background: #fff;
-  height: 100%;
-  padding-top: 80px;
+  height: calc(100vh - 83.6px);
 }

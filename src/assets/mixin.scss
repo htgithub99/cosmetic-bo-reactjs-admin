@@ -25,3 +25,21 @@
     }
   }
 }
+
+@mixin customScrollBar(
+  $widthScrollBar: 5px,
+  $borderRadius: 10px,
+  $backgroundScrollbar: transparent,
+  $heightScrollBar: 5px
+) {
+  &::-webkit-scrollbar {
+    width: $widthScrollBar;
+    background-color: $backgroundScrollbar;
+    height: $heightScrollBar;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $bg-side-nav;
+    border-radius: $borderRadius;
+  }
+}

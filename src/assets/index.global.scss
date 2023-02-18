@@ -1,11 +1,26 @@
 //global css
 @import url("https://fonts.googleapis.com/css2?family=Charis+SIL&display=swap");
+@import "./variables.scss";
+@import "./mixin.scss";
 body {
   font-family: "Charis SIL", serif;
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
+  @include customScrollBar(5px, 10px 5px)
 }
+
+.d-flex {
+  display: flex;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+//sidenav
+.toggle-side-nav {
+  display: none;
+  transition: all 0.5s ease 0s;
+}
+
 .btn-submit-login {
   width: 279px;
   border-radius: 50px;
