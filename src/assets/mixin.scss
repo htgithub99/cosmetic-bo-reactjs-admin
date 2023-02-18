@@ -1,0 +1,27 @@
+@import "./variables.scss";
+/*
+ * @mixin mq
+ * @description: media screen query min or max of width
+ */
+
+@function inexplicit($list, $keyable) {
+  @if (map-has-key($list, $keyable)) {
+    @return map-get($list, $keyable);
+  }
+  @return $keyable;
+}
+
+@mixin mq($breakpoint, $media: "min") {
+  @if $media == "min" {
+    $getBr: inexplicit($breakpointsUp, $breakpoint);
+    @media screen and (min-width: $getBr) {
+      @content;
+    }
+  }
+  @if $media == "max" {
+    $getBr: inexplicit($breakpointsDown, $breakpoint);
+    @media screen and (max-width: $getBr) {
+      @content;
+    }
+  }
+}

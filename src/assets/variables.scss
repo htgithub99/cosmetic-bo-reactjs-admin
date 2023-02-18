@@ -1,0 +1,87 @@
+// define global variables
+$background-modal-custom: #212121;
+$primary-gradient: linear-gradient(90deg, #ce08c3 0%, #f30066 100%);
+$font-youtube-sans: "YouTube Sans";
+$font-noto-sans-jp: "Noto Sans JP", sans-serif;
+
+//color
+$black-color: #000000;
+$white-color: #ffffff;
+$dark-color: #212121;
+$dark-2-color: #141414;
+$dark-3-color: #0a0a0a;
+$dark-4-color: #2e2e2e;
+$eerie-black-color: #181818;
+$primary-color: #ff0033;
+$gray-color: #c6c6c6;
+$gray-2-color: #cccccc;
+$gray-3-color: #c4c4c4;
+$gray-4-color: #dbdbdb;
+$pink-color: #ff6565;
+$pink-2-color: #f30066;
+$pink-3-color: #9d2456f7;
+$smoke-color: #878787;
+$smoke-2-color: #333333;
+$smoke-3-color: #444444;
+$smoke-4-color: #666666;
+$smoke-5-color: #555555;
+$smoke-7-color: #646464;
+$smoke-8-color: #383838;
+$green-color: #00dd00;
+$green-2-color: #00e105;
+$green-3-color: #06d13f;
+$blue-color: #3ca6ff;
+$blue-2-color: #1890ff;
+$blue-3-color: #40a9ff;
+$error-color: #ff4d4f;
+$thin-border-color: #252525;
+// Breakpoints up (From Mobile to PC)
+$breakpointsUp: (
+  xxl: 1536px,
+  // for viewport big size
+  dt: 1366px,
+  // dt: desktop
+  xl: 1280px,
+  // for viewport less than laptop
+  lg: 1024px,
+  // for tablet landscape and laptop small
+  md: 768px,
+  // for tablet portrait
+  sm: 640px,
+  // for mobile has viewport like: iphone 7, 8, 9..
+  mb: 375px,
+  // mb: mobile
+  xs: 320px,
+  // for mobile has viewport small like iphone 5, 6,,,,,,,,,,,,,,,,,,
+  //
+  zero: 0px,
+);
+
+// Breakpoints down (from PC to Mobile)
+$breakpointsDown: (
+  xxl: 1535px,
+  // for viewport big size
+  dt: 1365px,
+  // dt: desktop
+  xl: 1279px,
+  // for viewport less than laptop
+  lg: 1023px,
+  // for tablet landscape and laptop small
+  md: 767px,
+  // for tablet portrait
+  sm: 639px,
+  // for mobile has viewport like: iphone 7, 8, 9..
+  mb: 374px,
+  // mb: mobile
+  xs: 319px,
+  // for mobile has viewport small like iphone 5, 6,,,,,,,,,,,,,,,,,,
+  zero: 0px,
+);
+
+/*
+ * Internet Explorer, Microsoft Edge: -ms-
+ * Chrome, Safari, iOS, Android: -webkit-
+ * Firefox: -moz-
+ * Opera: -o-
+ */
+$engines: webkit, moz, o, ms;

@@ -1,0 +1,50 @@
+@import "assets/variables.scss";
+@import "assets/mixin.scss";
+.wrapPageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 20px;
+  background: transparent;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 9999;
+  .pageHeader_left {
+    display: flex;
+    align-items: center;
+    .left__logo {
+    }
+    .left_ul {
+      ul {
+        margin: 0;
+        li {
+          display: inline-block;
+          margin: 0 10px;
+          a {
+            text-decoration: none;
+            padding: 0 10px;
+            font-size: 15px;
+            line-height: 80px;
+            font-weight: bold;
+            color: #262626;
+
+            &:hover,
+            &:active {
+              color: $pink-color;
+            }
+          }
+        }
+      }
+    }
+  }
+  .pageHeader_right {
+    display: flex;
+    align-items: center;
+    .right_item {
+      margin: 0 10px;
+      cursor: pointer;
+    }
+  }
+}
