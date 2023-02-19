@@ -38,37 +38,42 @@ export default function SideNav() {
         {
           key: "2.2",
           text: "Quản lý kho",
-          url: RoutePath.PRODUCT_WAREHOUSE_PATH,
+          url: RoutePath.PRODUCT_VARIANTS_PATH,
         },
         {
           key: "2.3",
           text: "Đặt hàng nhập",
           url: RoutePath.PRODUCT_ORDER_PATH,
+          disabled: true,
         },
         {
           key: "2.4",
-          text: "Nhập kho",
-          url: RoutePath.PRODUCT_ENTER_STOCK_PATH,
+          text: "Nhập hàng",
+          url: RoutePath.PRODUCT_PURCHASE_ORDERS_PATH,
         },
         {
           key: "2.5",
           text: "Kiểm hàng",
           url: RoutePath.PRODUCT_CHECK_GOODS_PATH,
+          disabled: true,
         },
         {
           key: "2.6",
           text: "Chuyển hàng",
           url: RoutePath.PRODUCT_SHIPPING_PATH,
+          disabled: true,
         },
         {
           key: "2.7",
           text: "Nhà cung cấp",
           url: RoutePath.PRODUCT_SUPPLIER_PATH,
+          disabled: true,
         },
         {
           key: "2.8",
           text: "Điều chỉnh giá vốn",
           url: RoutePath.PRODUCT_CAPPITAL_PRICE_ADJUSTMENT_PATH,
+          disabled: true,
         },
       ],
     },
@@ -165,15 +170,20 @@ export default function SideNav() {
         defaultOpenKeys={[]}
         mode="inline"
         inlineCollapsed={collapsed}
-        theme={'dark'}
+        theme={"dark"}
       >
         {routes.map((route) => {
           if (route.children) {
             return (
               <SubMenu key={route.key} icon={route.icon} title={route.text}>
                 {route.children?.map((childRoute) => (
-                  <Menu.Item key={childRoute.key}>
-                    <Link to={childRoute.url}>{childRoute.text}</Link>
+                  <Menu.Item
+                    disabled={childRoute?.disabled}
+                    key={childRoute.key}
+                  >
+                    <Link to={childRoute?.disabled ? "#" : childRoute.url}>
+                      {childRoute.text}
+                    </Link>
                   </Menu.Item>
                 ))}
               </SubMenu>

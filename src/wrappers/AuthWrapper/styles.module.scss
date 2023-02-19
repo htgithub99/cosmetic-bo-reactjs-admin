@@ -1,3 +1,5 @@
+@import "assets/variables.scss";
+@import "assets/mixin.scss";
 .pageWrapper {
   height: 100vh;
   display: flex;
@@ -10,4 +12,5 @@
   flex: 1;
   overflow: auto;
   height: calc(100vh - 83.6px);
+  @include customScrollBar(5px, 10px, 5px);
 }

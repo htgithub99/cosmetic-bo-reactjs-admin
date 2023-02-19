@@ -1,16 +1,18 @@
 import { Button, Col, Form, Input, InputNumber, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 
+import styles from "./styles.module.scss";
+
 interface IProps {
   items: any;
 }
 
 const EditProduct = ({ items }: IProps) => {
   const [form] = useForm();
-  
+
   return (
     <>
-      <div className="wrapEditProduct">
+      <div className={styles.wrapEditProduct}>
         <Form form={form} layout="vertical">
           <Form.Item
             label="Tên sản phẩm"

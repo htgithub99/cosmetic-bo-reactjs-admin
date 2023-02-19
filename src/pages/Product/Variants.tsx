@@ -1,29 +1,23 @@
-import { Button, Drawer, Dropdown, MenuProps, Pagination, Table } from "antd";
+import { Dropdown, MenuProps, Table, Image } from "antd";
 import { ColumnsType } from "antd/es/table";
 import MainContainer from "components/MainContainer";
 import SearchHeaderTable from "components/SearchHeaderTable";
-import { useState } from "react";
-import CreateProduct from "./components/CreateProduct";
-import EditProduct from "./components/EditProduct";
 import styles from "./styles.module.scss";
 
 interface DataType {
   key: React.Key;
-  name: string;
-  type: string;
-  total: number;
-  price: number;
+  barcode: string;
+  image: string;
+  inventory: number;
+  retail_price: number;
+  product_version_name: number;
 }
 
-const Product = () => {
-  const [isDrawerCreate, setIsDrawerCreate] = useState<boolean>(false);
-  const [isDrawerEdit, setIsDrawerEdit] = useState<boolean>(false);
-
+const Variants = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <div>Sửa</div>,
-      onClick: ({ item, key, keyPath, domEvent }) => setIsDrawerEdit(true),
+      label: <div className="disabled-div">Sửa</div>,
     },
     {
       key: "2",
@@ -36,29 +30,36 @@ const Product = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "Tên sản phẩm",
-      dataIndex: "name",
+      title: "Mã vạch",
+      dataIndex: "barcode",
       ellipsis: true,
       responsive: ["md"],
       render: (text: string) => <a>{text}</a>,
     },
     {
-      title: "Loại sản phẩm",
-      dataIndex: "type",
+      title: "Ảnh",
+      dataIndex: "image",
+      ellipsis: true,
+      responsive: ["md"],
+      render: (url: string) => <Image src={url} alt={url} />,
+    },
+    {
+      title: "Tồn kho",
+      dataIndex: "inventory",
       ellipsis: true,
       responsive: ["md"],
       render: (text: string) => text,
     },
     {
-      title: "Số lượng",
-      dataIndex: "total",
+      title: "Giá bán lẻ",
+      dataIndex: "retail_price",
       ellipsis: true,
       responsive: ["md"],
       render: (text: string) => text,
     },
     {
-      title: "Giá",
-      dataIndex: "price",
+      title: "Tên phiên bản sản phẩm",
+      dataIndex: "product_version_name",
       ellipsis: true,
       responsive: ["md"],
       render: (text: string) => text,
@@ -81,24 +82,27 @@ const Product = () => {
   const data: DataType[] = [
     {
       key: "1",
-      name: "Nước hoa mini MCM",
-      type: "Nước hoa",
-      total: 90,
-      price: 1000,
+      barcode: "8809471816521",
+      image: "https://htmldemo.net/brancy/brancy/assets/images/shop/1.webp",
+      inventory: 90,
+      retail_price: 1000,
+      product_version_name: 1000,
     },
     {
       key: "2",
-      name: "Kem dưỡng ý dĩ Hatomugi 31sp",
-      type: "Nước hoa",
-      total: 90,
-      price: 1000,
+      barcode: "8809471816521",
+      image: "https://htmldemo.net/brancy/brancy/assets/images/shop/1.webp",
+      inventory: 90,
+      retail_price: 1000,
+      product_version_name: 1000,
     },
     {
       key: "3",
-      name: "Nước hoa chiết 10ml G9 nam",
-      type: "Nước hoa",
-      total: 90,
-      price: 1000,
+      barcode: "8809471816521",
+      image: "https://htmldemo.net/brancy/brancy/assets/images/shop/1.webp",
+      inventory: 90,
+      retail_price: 1000,
+      product_version_name: 1000,
     },
   ];
 
@@ -107,19 +111,14 @@ const Product = () => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {},
     getCheckboxProps: (record: DataType) => ({
       disabled: false, // Column configuration not to be checked
-      name: record.name,
+      barcode: record.barcode,
     }),
   };
-
-  const _onCloseDrawerCreate = () => setIsDrawerCreate(false);
-
-  const _onCloseDrawerEdit = () => setIsDrawerEdit(false);
-
   return (
     <MainContainer>
-      <div className={styles.wrapProduct}>
+      <div className={styles.wrapVariants}>
         <div className={styles.wrapHeader}>
-          <SearchHeaderTable _onCreate={() => setIsDrawerCreate(true)} />
+          <SearchHeaderTable btnCreateHas={false} />
         </div>
         <div className={styles.wrapContent}>
           <Table
@@ -140,24 +139,8 @@ const Product = () => {
           />
         </div>
       </div>
-      <Drawer
-        title="Tạo sản phẩm"
-        placement="right"
-        onClose={_onCloseDrawerCreate}
-        open={isDrawerCreate}
-      >
-        <CreateProduct />
-      </Drawer>
-      <Drawer
-        title="Sửa sản phẩm"
-        placement="right"
-        onClose={_onCloseDrawerEdit}
-        open={isDrawerEdit}
-      >
-        <EditProduct items={items} />
-      </Drawer>
     </MainContainer>
   );
 };
 
-export default Product;
+export default Variants;

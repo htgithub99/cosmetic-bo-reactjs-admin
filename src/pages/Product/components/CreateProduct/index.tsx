@@ -1,11 +1,13 @@
 import { Button, Col, Form, Input, InputNumber, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 
+import styles from "./styles.module.scss";
+
 const CreateProduct = () => {
   const [form] = useForm();
   return (
     <>
-      <div className="wrapCreateProduct">
+      <div className={styles.wrapCreateProduct}>
         <Form form={form} layout="vertical">
           <Form.Item
             label="Tên sản phẩm"
@@ -62,7 +64,7 @@ const CreateProduct = () => {
                 required
                 tooltip="This is a required field"
               >
-                <InputNumber className="w-100" placeholder="Nhập số lượng"/>
+                <InputNumber className="w-100" placeholder="Nhập số lượng" />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -71,7 +73,11 @@ const CreateProduct = () => {
                 required
                 tooltip="This is a required field"
               >
-                <InputNumber className="w-100" prefix="￥" placeholder="Nhập giá" />
+                <InputNumber
+                  className="w-100"
+                  prefix="￥"
+                  placeholder="Nhập giá"
+                />
               </Form.Item>
             </Col>
           </Row>

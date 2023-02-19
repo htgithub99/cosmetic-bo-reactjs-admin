@@ -8,9 +8,10 @@ import { Button, Input } from "antd";
 import styles from "./styles.module.scss";
 
 interface IProps {
-  _onCreate: () => void;
+  _onCreate?: () => void;
+  btnCreateHas?: boolean;
 }
-const SearchHeaderTable = ({ _onCreate }: IProps) => {
+const SearchHeaderTable = ({ _onCreate, btnCreateHas = true }: IProps) => {
   const _onSearch = () => {};
 
   return (
@@ -18,7 +19,7 @@ const SearchHeaderTable = ({ _onCreate }: IProps) => {
       <div className={styles.wrapBtnHeaderTable}>
         <div className={styles.btn__import}>
           <Button
-            type="primary"
+            type="dashed"
             icon={<DownloadOutlined />}
             htmlType="button"
             size="large"
@@ -26,7 +27,7 @@ const SearchHeaderTable = ({ _onCreate }: IProps) => {
             Nhập file
           </Button>
           <Button
-            type="primary"
+            type="dashed"
             icon={<UploadOutlined />}
             htmlType="button"
             size="large"
@@ -35,15 +36,17 @@ const SearchHeaderTable = ({ _onCreate }: IProps) => {
           </Button>
         </div>
         <div className={styles.btn_create}>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            htmlType="button"
-            size="large"
-            onClick={() => _onCreate && _onCreate()}
-          >
-            Tạo mới
-          </Button>
+          {btnCreateHas && (
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              htmlType="button"
+              size="large"
+              onClick={() => _onCreate && _onCreate()}
+            >
+              Tạo mới
+            </Button>
+          )}
         </div>
       </div>
       <div className={styles.wrapSearchHeaderTable}>
@@ -57,7 +60,7 @@ const SearchHeaderTable = ({ _onCreate }: IProps) => {
           />
         </div>
         <div className={styles.search_button}>
-          <Button type="primary" htmlType="button" size="large">
+          <Button type="dashed" htmlType="button" size="large">
             Lưu bộ lọc
           </Button>
         </div>

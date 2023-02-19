@@ -9,7 +9,7 @@ export default function AppWrapper() {
     <div className="root-wrapper">
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<AuthWrapper />}>
+        <Route path="/*" element={<AuthWrapper />}>
         </Route>
       </Routes>
     </div>
