@@ -1,4 +1,4 @@
-import { Drawer, Dropdown, MenuProps, Table, Image } from "antd";
+import { Drawer, Dropdown, Image, MenuProps, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import MainContainer from "components/MainContainer";
 import SearchHeaderTable from "components/SearchHeaderTable";
