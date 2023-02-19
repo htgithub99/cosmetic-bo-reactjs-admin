@@ -46,6 +46,11 @@ body {
             }
           }
         }
+        .ant-table-thead {
+          th, td {
+            padding: 10px 15px;
+          }
+        }
       }
     }
   }
