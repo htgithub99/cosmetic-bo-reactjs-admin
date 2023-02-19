@@ -10,45 +10,53 @@ import styles from "./styles.module.scss";
 interface IProps {
   _onCreate?: () => void;
   btnCreateHas?: boolean;
+  btnHeaderImport?: boolean;
 }
-const SearchHeaderTable = ({ _onCreate, btnCreateHas = true }: IProps) => {
+
+const SearchHeaderTable = ({
+  _onCreate,
+  btnCreateHas = true,
+  btnHeaderImport = true,
+}: IProps) => {
   const _onSearch = () => {};
 
   return (
     <>
-      <div className={styles.wrapBtnHeaderTable}>
-        <div className={styles.btn__import}>
-          <Button
-            type="dashed"
-            icon={<DownloadOutlined />}
-            htmlType="button"
-            size="large"
-          >
-            Nhập file
-          </Button>
-          <Button
-            type="dashed"
-            icon={<UploadOutlined />}
-            htmlType="button"
-            size="large"
-          >
-            Xuất file
-          </Button>
-        </div>
-        <div className={styles.btn_create}>
-          {btnCreateHas && (
+      {btnHeaderImport && (
+        <div className={styles.wrapBtnHeaderTable}>
+          <div className={styles.btn__import}>
             <Button
-              type="primary"
-              icon={<PlusOutlined />}
+              type="dashed"
+              icon={<DownloadOutlined />}
               htmlType="button"
               size="large"
-              onClick={() => _onCreate && _onCreate()}
             >
-              Tạo mới
+              Nhập file
             </Button>
-          )}
+            <Button
+              type="dashed"
+              icon={<UploadOutlined />}
+              htmlType="button"
+              size="large"
+            >
+              Xuất file
+            </Button>
+          </div>
+          <div className={styles.btn_create}>
+            {btnCreateHas && (
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                htmlType="button"
+                size="large"
+                onClick={() => _onCreate && _onCreate()}
+              >
+                Tạo mới
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <div className={styles.wrapSearchHeaderTable}>
         <div className={styles.search_item}>
           <Input

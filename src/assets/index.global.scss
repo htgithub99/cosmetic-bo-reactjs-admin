@@ -3,7 +3,7 @@
 @import "./variables.scss";
 @import "./mixin.scss";
 body {
-  font-family: "Charis SIL", serif;
+  font-family: "Charis SIL", serif !important;
   @include customScrollBar(5px, 10px, 5px);
 }
 

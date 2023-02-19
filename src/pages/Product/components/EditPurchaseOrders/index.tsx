@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Select } from "antd";
+import { Button, Col, Form, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 
 import styles from "./styles.module.scss";
@@ -14,13 +14,13 @@ const EditPurchaseOrders = ({ items }: IProps) => {
     <>
       <div className={styles.wrapEditPurchaseOrders}>
         <Form form={form} layout="vertical">
-          <Form.Item
+          {/* <Form.Item
             label="Mã đơn nhập"
             required
             tooltip="This is a required field"
           >
             <Input placeholder="Nhập mã đơn nhập" />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label="Nhân viên tạo">
             <Select
               showSearch
@@ -240,7 +240,7 @@ const EditPurchaseOrders = ({ items }: IProps) => {
           </Row>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Tạo mới
+              Chỉnh sửa
             </Button>
           </Form.Item>
         </Form>

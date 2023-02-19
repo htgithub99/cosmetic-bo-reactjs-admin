@@ -351,7 +351,7 @@ const PurchaseOrders = () => {
         </div>
       </div>
       <Drawer
-        title="Tạo sản phẩm"
+        title="Tạo đơn nhập hàng"
         placement="right"
         onClose={_onCloseDrawerCreate}
         open={isDrawerCreate}
@@ -359,7 +359,7 @@ const PurchaseOrders = () => {
         <CreatePurchaseOrders />
       </Drawer>
       <Drawer
-        title="Sửa sản phẩm"
+        title="Sửa đơn nhập hàng"
         placement="right"
         onClose={_onCloseDrawerEdit}
         open={isDrawerEdit}

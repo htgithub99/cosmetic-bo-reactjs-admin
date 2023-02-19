@@ -1,21 +1,31 @@
-import { Button, Col, Form, Input, Row, Select } from "antd";
+import { Button, Col, Form, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
+import ModalListProduct from "components/Modal/ModalListProduct";
+import { useState } from "react";
 
 import styles from "./styles.module.scss";
 
 const CreatePurchaseOrders = () => {
   const [form] = useForm();
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [dataProduct, setDataProduct] = useState<any>([]);
+
+  const _onSubmit = () => {};
+
+  const _onClose = () => setIsModalOpen(false);
+
   return (
     <>
       <div className={styles.wrapCreatePurchaseOrders}>
         <Form form={form} layout="vertical">
-          <Form.Item
+          {/* <Form.Item
             label="Mã đơn nhập"
             required
             tooltip="This is a required field"
           >
             <Input placeholder="Nhập mã đơn nhập" />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label="Nhân viên tạo">
             <Select
               showSearch
@@ -234,12 +244,29 @@ const CreatePurchaseOrders = () => {
             </Col>
           </Row>
           <Form.Item>
+            <Button
+              type="dashed"
+              htmlType="button"
+              className="w-100"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Chọn sản phẩm
+            </Button>
+          </Form.Item>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Tạo mới
             </Button>
           </Form.Item>
         </Form>
       </div>
+      <ModalListProduct
+        isModalOpen={isModalOpen}
+        _onSubmit={() => _onSubmit()}
+        _onClose={() => _onClose()}
+        data={dataProduct}
+        _setData={setDataProduct}
+      />
     </>
   );
 };

@@ -4,10 +4,13 @@ import { RoutePath } from "constants/constant";
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import styles from "./styles.module.scss";
-
+//Product
 const Product = lazy(() => import("pages/Product"));
 const Variants = lazy(() => import("pages/Product/Variants"));
 const PurchaseOrders = lazy(() => import("pages/Product/PurchaseOrders"));
+
+//Order
+const Order = lazy(() => import("pages/Order"))
 
 const Dashboard = lazy(() => import("pages/Dashboard"));
 
@@ -35,6 +38,12 @@ export default function PageWrapper() {
               <Route
                 path={RoutePath.PRODUCT_PURCHASE_ORDERS_PATH}
                 element={<PurchaseOrders />}
+              />
+
+              {/* Order */}
+              <Route
+                path={RoutePath.ORDER_LIST_PATH}
+                element={<Order />}
               />
             </Routes>
           </Suspense>
