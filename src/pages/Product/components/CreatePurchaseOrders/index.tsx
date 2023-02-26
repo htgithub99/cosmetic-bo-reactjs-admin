@@ -7,9 +7,7 @@ import styles from "./styles.module.scss";
 
 const CreatePurchaseOrders = () => {
   const [form] = useForm();
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [dataProduct, setDataProduct] = useState<any>([]);
 
   const _onSubmit = () => {};
 
@@ -264,8 +262,6 @@ const CreatePurchaseOrders = () => {
         isModalOpen={isModalOpen}
         _onSubmit={() => _onSubmit()}
         _onClose={() => _onClose()}
-        data={dataProduct}
-        _setData={setDataProduct}
       />
     </>
   );

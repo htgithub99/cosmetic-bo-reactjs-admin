@@ -1,9 +1,18 @@
 import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps, Space } from "antd";
+import { RoutePath } from "constants/constant";
+import { useNavigate } from "react-router-dom";
+import { logout } from "utils/helper/authentication";
 import styles from "./styles.module.scss";
 
 const PageHeader = () => {
+  const navigate = useNavigate();
   const _onClickAvatar = () => {};
+
+  const _onClickLogout = async () => {
+    logout();
+    navigate(RoutePath.LOGIN_PATH);
+  };
 
   const items: MenuProps["items"] = [
     {
@@ -48,7 +57,7 @@ const PageHeader = () => {
     {
       key: "4",
       danger: true,
-      label: "Đăng xuất",
+      label: <div onClick={_onClickLogout}>Đăng xuất</div>,
     },
   ];
 

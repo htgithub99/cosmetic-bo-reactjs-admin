@@ -1,5 +1,6 @@
 export const RoutePath = {
   HOME_PATH: "/",
+  LOGIN_PATH: "/login",
   PRODUCT_PATH: "/product",
   PRODUCT_LIST_PATH: "/product/list",
   PRODUCT_VARIANTS_PATH: "/product/variants",

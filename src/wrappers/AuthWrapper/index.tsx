@@ -1,8 +1,9 @@
 import PageHeader from "components/PageHeader";
 import SideNav from "components/SideNav";
 import { RoutePath } from "constants/constant";
+import Cookies from "js-cookie";
 import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import styles from "./styles.module.scss";
 //Product
 const Product = lazy(() => import("pages/Product"));
@@ -15,10 +16,10 @@ const Order = lazy(() => import("pages/Order"))
 const Dashboard = lazy(() => import("pages/Dashboard"));
 
 export default function PageWrapper() {
-  // const isAuthenticated = !!Cookies.get("token");
+  const isAuthenticated = !!Cookies.get("token");
   // const { profile } = useProfile(isAuthenticated);
 
-  // if (!isAuthenticated) return <Navigate to="/login" />;
+  if (!isAuthenticated) return <Navigate to="/login" />;
   // if (!profile) return null;
 
   return (

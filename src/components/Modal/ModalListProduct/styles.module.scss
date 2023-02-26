@@ -1,3 +1,5 @@
+@import "assets/variables.scss";
+@import "assets/mixin.scss";
 .wrapContent {
   .content_title {
     margin: 30px 0 15px 0;
@@ -13,9 +15,26 @@
     }
   }
   .content_data {
-    height: 400;
+    height: 400px;
     overflow: auto;
-    padding: 0 16px;
     border: 1px solid rgba(140, 140, 140, 0.35);
+    @include customScrollBar();
+    .wrapListMeta {
+      padding: 10px 15px;
+
+      :global {
+        .ant-checkbox-wrapper {
+          margin-right: 10px;
+        }
+      }
+    }
+    .wrapDetailProduct {
+      .detailProduct__entryPrice {
+        color: $smoke-9-color;
+        span {
+          color: $blue-color;
+        }
+      }
+    }
   }
 }

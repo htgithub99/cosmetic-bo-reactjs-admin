@@ -1,14 +1,28 @@
 import { Button, Col, Form, Input, InputNumber, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
+import { getByIdProduct } from "api/product";
+import { useEffect } from "react";
+import { useQuery } from "react-query";
 
 import styles from "./styles.module.scss";
 
 interface IProps {
-  items: any;
+  productId: any;
 }
 
-const EditProduct = ({ items }: IProps) => {
+const EditProduct = ({ productId }: IProps) => {
   const [form] = useForm();
+
+  const { data: detailProduct, isLoading } = useQuery(
+    ["GET_BY_ID_PRODUCT"],
+    () => getByIdProduct(productId)
+  );
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...detailProduct,
+    });
+  }, [isLoading]);
 
   return (
     <>

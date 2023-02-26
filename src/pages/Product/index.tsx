@@ -1,8 +1,11 @@
 import { Button, Drawer, Dropdown, MenuProps, Pagination, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { getListProduct } from "api/product";
 import MainContainer from "components/MainContainer";
 import SearchHeaderTable from "components/SearchHeaderTable";
+import { formatMoney } from "constants/format";
 import { useState } from "react";
+import { useQuery } from "react-query";
 import CreateProduct from "./components/CreateProduct";
 import EditProduct from "./components/EditProduct";
 import styles from "./styles.module.scss";
@@ -19,6 +22,12 @@ const Product = () => {
   const [isDrawerCreate, setIsDrawerCreate] = useState<boolean>(false);
   const [isDrawerEdit, setIsDrawerEdit] = useState<boolean>(false);
 
+  const { data: productData, isLoading: isLoadingProductData } = useQuery(
+    ["LIST_PRODUCT_KEY"],
+    () => getListProduct({}),
+    {}
+  );
+
   const items: MenuProps["items"] = [
     {
       key: "1",
@@ -34,24 +43,24 @@ const Product = () => {
     },
   ];
 
-  const columns: ColumnsType<DataType> = [
+  const COLUMNS_PRODUCT: ColumnsType<DataType> = [
     {
       title: "Tên sản phẩm",
-      dataIndex: "name",
+      dataIndex: "product_name",
       ellipsis: true,
       responsive: ["md"],
       render: (text: string) => <a>{text}</a>,
     },
     {
       title: "Loại sản phẩm",
-      dataIndex: "type",
+      dataIndex: "product_type",
       ellipsis: true,
       responsive: ["md"],
       render: (text: string) => text,
     },
     {
       title: "Số lượng",
-      dataIndex: "total",
+      dataIndex: "quantity",
       ellipsis: true,
       responsive: ["md"],
       render: (text: string) => text,
@@ -78,29 +87,11 @@ const Product = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: "1",
-      name: "Nước hoa mini MCM",
-      type: "Nước hoa",
-      total: 90,
-      price: 1000,
-    },
-    {
-      key: "2",
-      name: "Kem dưỡng ý dĩ Hatomugi 31sp",
-      type: "Nước hoa",
-      total: 90,
-      price: 1000,
-    },
-    {
-      key: "3",
-      name: "Nước hoa chiết 10ml G9 nam",
-      type: "Nước hoa",
-      total: 90,
-      price: 1000,
-    },
-  ];
+  const data: DataType[] = productData?.data?.map((item: any) => ({
+    ...item,
+    key: item._id,
+    price: formatMoney(item?.price),
+  }));
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
@@ -127,9 +118,9 @@ const Product = () => {
               type: "checkbox",
               ...rowSelection,
             }}
-            columns={columns}
+            columns={COLUMNS_PRODUCT}
             dataSource={data}
-            loading={false}
+            loading={isLoadingProductData}
             pagination={{
               total: 85,
               showTotal: (total, range) =>
@@ -154,7 +145,7 @@ const Product = () => {
         onClose={_onCloseDrawerEdit}
         open={isDrawerEdit}
       >
-        <EditProduct items={items} />
+        <EditProduct productId={'63fb2f8e678bfd92d033961a'} />
       </Drawer>
     </MainContainer>
   );

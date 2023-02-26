@@ -20,6 +20,14 @@ body {
   opacity: 0.6;
 }
 
+.custom-ant-image-mask {
+  .ant-image-mask {
+    .ant-image-mask-info {
+      display: none;
+    }
+  }
+}
+
 //table
 
 .ant-table {
@@ -47,7 +55,8 @@ body {
           }
         }
         .ant-table-thead {
-          th, td {
+          th,
+          td {
             padding: 10px 15px;
           }
         }

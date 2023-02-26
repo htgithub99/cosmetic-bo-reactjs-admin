@@ -6,7 +6,7 @@ export const onErrorMessage = (
 ) => {
   const [messageApi, contextHolder] = message.useMessage();
   (messageApi as any).open({
-    type,
-    content,
+    type: 'success',
+    content: 'dhsadhjsad',
   });
 };

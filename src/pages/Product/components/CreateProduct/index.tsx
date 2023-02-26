@@ -1,17 +1,29 @@
 import { Button, Col, Form, Input, InputNumber, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
+import { createProduct } from "api/product";
+import { useMutation } from "react-query";
 
 import styles from "./styles.module.scss";
 
 const CreateProduct = () => {
   const [form] = useForm();
+
+  const { mutate: _onSubmit } = useMutation(
+    (payload) => createProduct(payload),
+    {
+      onSuccess: () => {},
+      onError: (error) => {},
+    }
+  );
+
   return (
     <>
       <div className={styles.wrapCreateProduct}>
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical" onFinish={_onSubmit}>
           <Form.Item
             label="Tên sản phẩm"
             required
+            name="product_name"
             tooltip="This is a required field"
           >
             <Input placeholder="Nhập tên sản phẩm" />
@@ -19,6 +31,7 @@ const CreateProduct = () => {
           <Form.Item
             label="Giá nhập"
             required
+            name="entry_price"
             tooltip="This is a required field"
           >
             <InputNumber
@@ -27,7 +40,7 @@ const CreateProduct = () => {
               placeholder="Nhập giá nhập"
             />
           </Form.Item>
-          <Form.Item label="Loại sản phẩm">
+          <Form.Item label="Loại sản phẩm" name="product_type">
             <Select
               showSearch
               placeholder="Chọn loại sản phẩm"
@@ -42,28 +55,16 @@ const CreateProduct = () => {
               }
               options={[
                 {
-                  value: "1",
-                  label: "Not Identified",
+                  value: "Nước hoa",
+                  label: "Nước hoa",
                 },
                 {
-                  value: "2",
-                  label: "Closed",
+                  value: "Dầu gội",
+                  label: "Dầu gội",
                 },
                 {
-                  value: "3",
-                  label: "Communicated",
-                },
-                {
-                  value: "4",
-                  label: "Identified",
-                },
-                {
-                  value: "5",
-                  label: "Resolved",
-                },
-                {
-                  value: "6",
-                  label: "Cancelled",
+                  value: "Phấn trang điểm",
+                  label: "Phấn trang điểm",
                 },
               ]}
             />
@@ -74,6 +75,7 @@ const CreateProduct = () => {
                 label="Giá cộng tác viên"
                 required
                 tooltip="This is a required field"
+                name="contributor_price"
               >
                 <InputNumber
                   className="w-100"
@@ -87,6 +89,7 @@ const CreateProduct = () => {
                 label="Giá bán"
                 required
                 tooltip="This is a required field"
+                name="price"
               >
                 <InputNumber
                   className="w-100"
@@ -102,12 +105,13 @@ const CreateProduct = () => {
                 label="Số lượng"
                 required
                 tooltip="This is a required field"
+                name="quantity"
               >
                 <InputNumber className="w-100" placeholder="Nhập số lượng" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Chi nhánh">
+              <Form.Item label="Chi nhánh" name="branch">
                 <Select
                   showSearch
                   placeholder="Chọn chi nhánh"
@@ -122,28 +126,12 @@ const CreateProduct = () => {
                   }
                   options={[
                     {
-                      value: "1",
-                      label: "Not Identified",
+                      value: "Chi nhánh 1",
+                      label: "Chi nhánh 1",
                     },
                     {
-                      value: "2",
-                      label: "Closed",
-                    },
-                    {
-                      value: "3",
-                      label: "Communicated",
-                    },
-                    {
-                      value: "4",
-                      label: "Identified",
-                    },
-                    {
-                      value: "5",
-                      label: "Resolved",
-                    },
-                    {
-                      value: "6",
-                      label: "Cancelled",
+                      value: "Chi nhánh 2",
+                      label: "Chi nhánh 2",
                     },
                   ]}
                 />

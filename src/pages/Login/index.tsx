@@ -1,8 +1,10 @@
 import { Button, Form, Input } from "antd";
+import { signin } from "api/authentication";
 import MainContainer from "components/MainContainer";
+import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { onErrorMessage } from "utils/helper/message";
+import { useMutation } from "react-query";
+import { Link, Navigate } from "react-router-dom";
 import styles from "./style.module.scss";
 
 export default function Login() {
@@ -10,12 +12,16 @@ export default function Login() {
 
   const navigateToSignUp = () => {};
 
-  const onFinish = async (payload: any) => {
-    onErrorMessage();
-  };
+  const { mutate: onFinish } = useMutation((payload) => signin(payload), {
+    onSuccess: (data) => {
+      Cookies.set("token", data?.data?.token);
+    },
+    onError: (error) => {},
+  });
+  // signin
 
-  // const isAuthenticated = !!Cookies.get("token");
-  // if (isAuthenticated) return <Navigate to="/" />;
+  const isAuthenticated = !!Cookies.get("token");
+  if (isAuthenticated) return <Navigate to="/" />;
 
   return (
     <MainContainer>
@@ -29,8 +35,7 @@ export default function Login() {
           </div>
           <h1>Đăng nhập vào cửa hàng của bạn</h1>
           <p>
-            Truy cập cửa hàng{" "}
-            <Link to="#">www.bocosmetic.com</Link>
+            Truy cập cửa hàng <Link to="#">www.bocosmetic.com</Link>
           </p>
         </div>
         <div className={styles.wrapContent}>
@@ -41,7 +46,7 @@ export default function Login() {
             onFinish={onFinish}
             autoComplete="off"
           >
-            <Form.Item name="username" rules={[{ required: true }]}>
+            <Form.Item name="email" rules={[{ required: true }]}>
               <Input placeholder="Email/Số điện thoại của bạn" />
             </Form.Item>
 

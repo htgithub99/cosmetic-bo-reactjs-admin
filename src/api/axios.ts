@@ -13,7 +13,7 @@ axiosInstance.interceptors.request.use(
     // eslint-disable-next-line no-param-reassign
     const token = Cookies.get("token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = token;
     }
     return config;
   },
@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
         if (res.status === 200) {
           const data = res.data.data;
           Cookies.set("token", data.token);
-          originalConfig.headers.Authorization = `Bearer ${data.token}`;
+          originalConfig.headers.Authorization = data.token;
           return Axios(originalConfig);
         } else {
           logout();

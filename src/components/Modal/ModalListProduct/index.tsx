@@ -1,27 +1,30 @@
-import { Avatar, Checkbox, Divider, List, Modal, Skeleton } from "antd";
+import { Image, Checkbox, Divider, List, Modal, Skeleton } from "antd";
+import classNames from "classnames";
 import SearchHeaderTable from "components/SearchHeaderTable";
 import InfiniteScroll from "react-infinite-scroll-component";
+import useProduct from "utils/hooks/useProduct";
 
 import styles from "./styles.module.scss";
 
 interface IProps {
-  data: any;
   isModalOpen: boolean;
   _onSubmit: () => void;
   _onClose: () => void;
-  _setData: any;
 }
 
-const ModalListProduct = ({
-  isModalOpen,
-  _onSubmit,
-  _onClose,
-  data,
-  _setData,
-}: IProps) => {
+const ModalListProduct = ({ isModalOpen, _onSubmit, _onClose }: IProps) => {
+  const { productData } = useProduct();
+  console.log({ productData });
+
+  const stylesImage = {
+    borderRadius: "5px",
+  };
+
   return (
     <Modal
       title="Chọn sản phẩm"
+      centered
+      width={800}
       open={isModalOpen}
       okText="Xác nhận"
       cancelText="Thoát"
@@ -35,19 +38,32 @@ const ModalListProduct = ({
         </div>
         <div className={styles.content_data} id="scrollable-list-product-modal">
           <InfiniteScroll
-            dataLength={data.length}
+            dataLength={productData?.length || 0}
             next={() => {}}
-            hasMore={data.length < 50}
+            hasMore={productData?.length < 50}
             loader={false}
             endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
             scrollableTarget="scrollable-list-product-modal"
           >
             <List
-              dataSource={data}
+              dataSource={productData}
               renderItem={(item: any) => (
-                <List.Item key={item.email}>
+                <List.Item
+                  key={item.email}
+                  className={classNames(
+                    styles.wrapListMeta,
+                    "custom-ant-image-mask"
+                  )}
+                >
+                  <Checkbox />
                   <List.Item.Meta
-                    avatar={<Avatar src={item.picture.large} />}
+                    avatar={
+                      <Image
+                        style={{ ...stylesImage }}
+                        src={item.picture.large}
+                        width={50}
+                      />
+                    }
                     title={<a href="https://ant.design">{item.name.last}</a>}
                     description={item.email}
                   />
