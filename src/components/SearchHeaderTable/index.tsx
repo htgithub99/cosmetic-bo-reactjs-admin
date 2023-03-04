@@ -5,20 +5,23 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { Button, Input } from "antd";
+import { useState } from "react";
 import styles from "./styles.module.scss";
 
 interface IProps {
   _onCreate?: () => void;
   btnCreateHas?: boolean;
   btnHeaderImport?: boolean;
+  _onSearchField?: (value: any) => void;
 }
 
 const SearchHeaderTable = ({
   _onCreate,
   btnCreateHas = true,
   btnHeaderImport = true,
+  _onSearchField,
 }: IProps) => {
-  const _onSearch = () => {};
+  const [inputValue, setInputValue] = useState<string>("");
 
   return (
     <>
@@ -65,10 +68,18 @@ const SearchHeaderTable = ({
             prefix={
               <SearchOutlined style={{ fontSize: "18px", color: "#08c" }} />
             }
+            onChange={(event: any) => {
+              setInputValue(event?.target?.value);
+            }}
           />
         </div>
         <div className={styles.search_button}>
-          <Button type="dashed" htmlType="button" size="large">
+          <Button
+            type="dashed"
+            htmlType="button"
+            size="large"
+            onClick={() => _onSearchField && _onSearchField(inputValue)}
+          >
             Lưu bộ lọc
           </Button>
         </div>

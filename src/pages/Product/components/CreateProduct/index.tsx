@@ -1,18 +1,35 @@
 import { Button, Col, Form, Input, InputNumber, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { createProduct } from "api/product";
-import { useMutation } from "react-query";
+import { QueryKey } from "constants/constant";
+import { handleErrorMessage, handleSuccessMessage } from "i18n";
+import { useMutation, useQueryClient } from "react-query";
 
 import styles from "./styles.module.scss";
 
-const CreateProduct = () => {
+interface IProps {
+  _onCloseModal: () => void;
+  sizePage: any
+}
+
+const CreateProduct = ({ _onCloseModal, sizePage }: IProps) => {
   const [form] = useForm();
+  const queryClient = useQueryClient();
 
   const { mutate: _onSubmit } = useMutation(
     (payload) => createProduct(payload),
     {
-      onSuccess: () => {},
-      onError: (error) => {},
+      onSuccess: (data) => {
+        handleSuccessMessage(data);
+        form.resetFields();
+        _onCloseModal();
+      },
+      onError: (error) => {
+        handleErrorMessage(error);
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries([QueryKey.LIST_PRODUCT_KEY, sizePage]);
+      },
     }
   );
 
@@ -22,17 +39,27 @@ const CreateProduct = () => {
         <Form form={form} layout="vertical" onFinish={_onSubmit}>
           <Form.Item
             label="Tên sản phẩm"
-            required
+            rules={[
+              {
+                required: true,
+                message: "Trường này không được để trống!",
+              },
+            ]}
             name="product_name"
-            tooltip="This is a required field"
+            tooltip="Nhập tên sản phẩm"
           >
             <Input placeholder="Nhập tên sản phẩm" />
           </Form.Item>
           <Form.Item
             label="Giá nhập"
-            required
+            rules={[
+              {
+                required: true,
+                message: "Trường này không được để trống!",
+              },
+            ]}
             name="entry_price"
-            tooltip="This is a required field"
+            tooltip="Nhập giá nhập"
           >
             <InputNumber
               prefix="￥"
@@ -40,7 +67,16 @@ const CreateProduct = () => {
               placeholder="Nhập giá nhập"
             />
           </Form.Item>
-          <Form.Item label="Loại sản phẩm" name="product_type">
+          <Form.Item
+            label="Loại sản phẩm"
+            name="product_type"
+            rules={[
+              {
+                required: true,
+                message: "Loại sản phẩm không được để trống!",
+              },
+            ]}
+          >
             <Select
               showSearch
               placeholder="Chọn loại sản phẩm"
@@ -73,8 +109,13 @@ const CreateProduct = () => {
             <Col span={12}>
               <Form.Item
                 label="Giá cộng tác viên"
-                required
-                tooltip="This is a required field"
+                rules={[
+                  {
+                    required: true,
+                    message: "Giá cộng tác viên không được để trống!",
+                  },
+                ]}
+                tooltip="Nhập giá cộng tác viên"
                 name="contributor_price"
               >
                 <InputNumber
@@ -87,8 +128,13 @@ const CreateProduct = () => {
             <Col span={12}>
               <Form.Item
                 label="Giá bán"
-                required
-                tooltip="This is a required field"
+                rules={[
+                  {
+                    required: true,
+                    message: "Giá bán không được để trống!",
+                  },
+                ]}
+                tooltip="Nhập giá bán"
                 name="price"
               >
                 <InputNumber
@@ -103,15 +149,29 @@ const CreateProduct = () => {
             <Col span={12}>
               <Form.Item
                 label="Số lượng"
-                required
-                tooltip="This is a required field"
+                rules={[
+                  {
+                    required: true,
+                    message: "Số lượng không được để trống!",
+                  },
+                ]}
+                tooltip="Nhập số lượng"
                 name="quantity"
               >
                 <InputNumber className="w-100" placeholder="Nhập số lượng" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Chi nhánh" name="branch">
+              <Form.Item
+                label="Chi nhánh"
+                name="branch"
+                rules={[
+                  {
+                    required: true,
+                    message: "Chi nhánh không được để trống!",
+                  },
+                ]}
+              >
                 <Select
                   showSearch
                   placeholder="Chọn chi nhánh"

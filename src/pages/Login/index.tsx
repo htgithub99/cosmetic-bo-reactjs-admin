@@ -1,6 +1,7 @@
 import { Button, Form, Input } from "antd";
 import { signin } from "api/authentication";
 import MainContainer from "components/MainContainer";
+import { handleErrorMessage } from "i18n";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "react-query";
@@ -16,7 +17,7 @@ export default function Login() {
     onSuccess: (data) => {
       Cookies.set("token", data?.data?.token);
     },
-    onError: (error) => {},
+    onError: (error) => handleErrorMessage(error),
   });
   // signin
 

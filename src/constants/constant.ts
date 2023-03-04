@@ -17,5 +17,10 @@ export const RoutePath = {
   CLIENT_PATH: "/client",
   CLIENT_LIST_PATH: "/client/list",
   CLIENT_CUSTOMER_GROUP_PATH: "/client/customer-group",
-  SELLING_COUNTER_PATH: 'selling-counter'
+  SELLING_COUNTER_PATH: "selling-counter",
+};
+
+export const QueryKey = {
+  LIST_PRODUCT_KEY: "LIST_PRODUCT_KEY",
+  GET_BY_ID_PRODUCT: "GET_BY_ID_PRODUCT"
 };

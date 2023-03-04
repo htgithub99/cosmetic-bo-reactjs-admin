@@ -1,44 +1,77 @@
 import { Button, Col, Form, Input, InputNumber, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { getByIdProduct } from "api/product";
+import { getByIdProduct, updateProduct } from "api/product";
+import { QueryKey } from "constants/constant";
+import { handleSuccessMessage } from "i18n";
 import { useEffect } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import styles from "./styles.module.scss";
 
 interface IProps {
   productId: any;
+  _onCloseModal: () => void;
+  sizePage: any;
 }
 
-const EditProduct = ({ productId }: IProps) => {
+const EditProduct = ({ productId, _onCloseModal, sizePage }: IProps) => {
   const [form] = useForm();
+  const queryClient = useQueryClient();
 
   const { data: detailProduct, isLoading } = useQuery(
-    ["GET_BY_ID_PRODUCT"],
-    () => getByIdProduct(productId)
+    [QueryKey.GET_BY_ID_PRODUCT, productId],
+    () => getByIdProduct(productId),
+    {
+      enabled: Boolean(productId),
+    }
+  );
+
+  const { mutate: _onSubmit } = useMutation(
+    (payload) => updateProduct(productId, payload),
+    {
+      onSuccess: (data) => {
+        handleSuccessMessage(data);
+        form.resetFields();
+        _onCloseModal();
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries([QueryKey.LIST_PRODUCT_KEY, sizePage]);
+      },
+    }
   );
 
   useEffect(() => {
-    form.setFieldsValue({
-      ...detailProduct,
-    });
-  }, [isLoading]);
+    form.setFieldsValue(detailProduct?.data);
+    return () => form.resetFields();
+  }, [detailProduct]);
 
   return (
     <>
       <div className={styles.wrapEditProduct}>
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical" onFinish={_onSubmit}>
           <Form.Item
             label="Tên sản phẩm"
-            required
-            tooltip="This is a required field"
+            rules={[
+              {
+                required: true,
+                message: "Trường này không được để trống!",
+              },
+            ]}
+            name="product_name"
+            tooltip="Nhập tên sản phẩm"
           >
             <Input placeholder="Nhập tên sản phẩm" />
           </Form.Item>
           <Form.Item
             label="Giá nhập"
-            required
-            tooltip="This is a required field"
+            rules={[
+              {
+                required: true,
+                message: "Trường này không được để trống!",
+              },
+            ]}
+            name="entry_price"
+            tooltip="Nhập giá nhập"
           >
             <InputNumber
               prefix="￥"
@@ -46,7 +79,16 @@ const EditProduct = ({ productId }: IProps) => {
               placeholder="Nhập giá nhập"
             />
           </Form.Item>
-          <Form.Item label="Loại sản phẩm">
+          <Form.Item
+            label="Loại sản phẩm"
+            name="product_type"
+            rules={[
+              {
+                required: true,
+                message: "Loại sản phẩm không được để trống!",
+              },
+            ]}
+          >
             <Select
               showSearch
               placeholder="Chọn loại sản phẩm"
@@ -61,28 +103,16 @@ const EditProduct = ({ productId }: IProps) => {
               }
               options={[
                 {
-                  value: "1",
-                  label: "Not Identified",
+                  value: "Nước hoa",
+                  label: "Nước hoa",
                 },
                 {
-                  value: "2",
-                  label: "Closed",
+                  value: "Dầu gội",
+                  label: "Dầu gội",
                 },
                 {
-                  value: "3",
-                  label: "Communicated",
-                },
-                {
-                  value: "4",
-                  label: "Identified",
-                },
-                {
-                  value: "5",
-                  label: "Resolved",
-                },
-                {
-                  value: "6",
-                  label: "Cancelled",
+                  value: "Phấn trang điểm",
+                  label: "Phấn trang điểm",
                 },
               ]}
             />
@@ -91,12 +121,18 @@ const EditProduct = ({ productId }: IProps) => {
             <Col span={12}>
               <Form.Item
                 label="Giá cộng tác viên"
-                required
-                tooltip="This is a required field"
+                rules={[
+                  {
+                    required: true,
+                    message: "Giá cộng tác viên không được để trống!",
+                  },
+                ]}
+                tooltip="Nhập giá cộng tác viên"
+                name="contributor_price"
               >
                 <InputNumber
-                  prefix="￥"
                   className="w-100"
+                  prefix="￥"
                   placeholder="Nhập giá cộng tác viên"
                 />
               </Form.Item>
@@ -104,8 +140,14 @@ const EditProduct = ({ productId }: IProps) => {
             <Col span={12}>
               <Form.Item
                 label="Giá bán"
-                required
-                tooltip="This is a required field"
+                rules={[
+                  {
+                    required: true,
+                    message: "Giá bán không được để trống!",
+                  },
+                ]}
+                tooltip="Nhập giá bán"
+                name="price"
               >
                 <InputNumber
                   className="w-100"
@@ -119,14 +161,29 @@ const EditProduct = ({ productId }: IProps) => {
             <Col span={12}>
               <Form.Item
                 label="Số lượng"
-                required
-                tooltip="This is a required field"
+                rules={[
+                  {
+                    required: true,
+                    message: "Số lượng không được để trống!",
+                  },
+                ]}
+                tooltip="Nhập số lượng"
+                name="quantity"
               >
                 <InputNumber className="w-100" placeholder="Nhập số lượng" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Chi nhánh">
+              <Form.Item
+                label="Chi nhánh"
+                name="branch"
+                rules={[
+                  {
+                    required: true,
+                    message: "Chi nhánh không được để trống!",
+                  },
+                ]}
+              >
                 <Select
                   showSearch
                   placeholder="Chọn chi nhánh"
@@ -141,28 +198,12 @@ const EditProduct = ({ productId }: IProps) => {
                   }
                   options={[
                     {
-                      value: "1",
-                      label: "Not Identified",
+                      value: "Chi nhánh 1",
+                      label: "Chi nhánh 1",
                     },
                     {
-                      value: "2",
-                      label: "Closed",
-                    },
-                    {
-                      value: "3",
-                      label: "Communicated",
-                    },
-                    {
-                      value: "4",
-                      label: "Identified",
-                    },
-                    {
-                      value: "5",
-                      label: "Resolved",
-                    },
-                    {
-                      value: "6",
-                      label: "Cancelled",
+                      value: "Chi nhánh 2",
+                      label: "Chi nhánh 2",
                     },
                   ]}
                 />

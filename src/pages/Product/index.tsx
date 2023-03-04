@@ -1,11 +1,13 @@
-import { Button, Drawer, Dropdown, MenuProps, Pagination, Table } from "antd";
+import { Button, Drawer, Popconfirm, Space, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { getListProduct } from "api/product";
+import { deleteProduct, getListProduct } from "api/product";
 import MainContainer from "components/MainContainer";
 import SearchHeaderTable from "components/SearchHeaderTable";
+import { QueryKey } from "constants/constant";
 import { formatMoney } from "constants/format";
+import { handleErrorMessage, handleSuccessMessage } from "i18n";
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import CreateProduct from "./components/CreateProduct";
 import EditProduct from "./components/EditProduct";
 import styles from "./styles.module.scss";
@@ -19,29 +21,59 @@ interface DataType {
 }
 
 const Product = () => {
+  const queryClient = useQueryClient();
   const [isDrawerCreate, setIsDrawerCreate] = useState<boolean>(false);
-  const [isDrawerEdit, setIsDrawerEdit] = useState<boolean>(false);
+  
+  const [sizePage, setSizePage] = useState<any>({
+    name: null,
+  });
+
+  const [updateDrawer, setUpdateDrawer] = useState<{
+    productId: number | null;
+    modalHas: boolean;
+  }>({
+    productId: null,
+    modalHas: false,
+  });
 
   const { data: productData, isLoading: isLoadingProductData } = useQuery(
-    ["LIST_PRODUCT_KEY"],
-    () => getListProduct({}),
+    [QueryKey.LIST_PRODUCT_KEY, sizePage],
+    () => getListProduct(sizePage),
     {}
   );
 
-  const items: MenuProps["items"] = [
+  const { mutate: onDeleteProduct } = useMutation(
+    ({ _id }: any) => deleteProduct(_id),
     {
-      key: "1",
-      label: <div>Sửa</div>,
-      onClick: ({ item, key, keyPath, domEvent }) => setIsDrawerEdit(true),
-    },
-    {
-      key: "2",
-      label: <div>Xóa</div>,
-      onClick: ({ item, key, keyPath, domEvent }) => {
-        console.log({ item, key, keyPath, domEvent });
+      onSuccess: (data) => {
+        handleSuccessMessage(data);
       },
-    },
-  ];
+      onError: (error) => handleErrorMessage(error),
+      onSettled: () =>
+        queryClient.invalidateQueries([QueryKey.LIST_PRODUCT_KEY, sizePage]),
+    }
+  );
+
+  const onClickUpdateProduct = ({ _id }: any) => {
+    setUpdateDrawer({
+      productId: _id,
+      modalHas: true,
+    });
+  };
+
+  const _onSearchField = (value: any) => {
+    setSizePage({
+      ...sizePage,
+      name: value,
+    });
+  };
+
+  const _onPaginationTable = (pageIndex: any) => {
+    setSizePage({
+      ...sizePage,
+      pageIndex,
+    });
+  }
 
   const COLUMNS_PRODUCT: ColumnsType<DataType> = [
     {
@@ -49,27 +81,34 @@ const Product = () => {
       dataIndex: "product_name",
       ellipsis: true,
       responsive: ["md"],
+      align: "left",
       render: (text: string) => <a>{text}</a>,
     },
     {
       title: "Loại sản phẩm",
       dataIndex: "product_type",
       ellipsis: true,
+      width: 150,
       responsive: ["md"],
+      align: "center",
       render: (text: string) => text,
     },
     {
       title: "Số lượng",
       dataIndex: "quantity",
+      width: 150,
       ellipsis: true,
       responsive: ["md"],
+      align: "center",
       render: (text: string) => text,
     },
     {
       title: "Giá",
       dataIndex: "price",
+      width: 150,
       ellipsis: true,
       responsive: ["md"],
+      align: "right",
       render: (text: string) => text,
     },
     {
@@ -77,12 +116,30 @@ const Product = () => {
       dataIndex: "action",
       ellipsis: true,
       responsive: ["md"],
-      render: (text: string) => (
-        <div className={styles.wrapAction}>
-          <Dropdown menu={{ items }} placement="topCenter" arrow>
-            <span className="material-symbols-outlined">more_vert</span>
-          </Dropdown>
-        </div>
+      align: "center",
+      render: (_, record) => (
+        <Space size="middle">
+          <Button
+            type="dashed"
+            onClick={() => onClickUpdateProduct(record)}
+            htmlType="button"
+            size="small"
+          >
+            Chỉnh sửa
+          </Button>
+          <Popconfirm
+            title="Xóa sản phẩm"
+            placement="topLeft"
+            description="Bạn có muốn xóa sản phẩm này không?"
+            onConfirm={() => onDeleteProduct(record)}
+            okText="Xác nhận"
+            cancelText="Hủy"
+          >
+            <Button type="dashed" htmlType="button" size="small">
+              Xóa
+            </Button>
+          </Popconfirm>
+        </Space>
       ),
     },
   ];
@@ -104,13 +161,20 @@ const Product = () => {
 
   const _onCloseDrawerCreate = () => setIsDrawerCreate(false);
 
-  const _onCloseDrawerEdit = () => setIsDrawerEdit(false);
+  const _onCloseDrawerEdit = () =>
+    setUpdateDrawer({
+      productId: null,
+      modalHas: false,
+    });
 
   return (
-    <MainContainer>
+    <MainContainer classW="h-100">
       <div className={styles.wrapProduct}>
         <div className={styles.wrapHeader}>
-          <SearchHeaderTable _onCreate={() => setIsDrawerCreate(true)} />
+          <SearchHeaderTable
+            _onSearchField={(value) => _onSearchField(value)}
+            _onCreate={() => setIsDrawerCreate(true)}
+          />
         </div>
         <div className={styles.wrapContent}>
           <Table
@@ -122,11 +186,12 @@ const Product = () => {
             dataSource={data}
             loading={isLoadingProductData}
             pagination={{
-              total: 85,
+              total: productData?.totalItems,
               showTotal: (total, range) =>
-                `${range[0]}-${range[1]} of ${total} items`,
-              defaultPageSize: 20,
+                `Từ ${productData?.pageIndex || 1} đến ${total} trên tổng ${productData?.totalItems}`,
+              defaultPageSize: productData?.pageSize || 5,
               defaultCurrent: 1,
+              onChange: (page) => _onPaginationTable(page)
             }}
           />
         </div>
@@ -137,15 +202,22 @@ const Product = () => {
         onClose={_onCloseDrawerCreate}
         open={isDrawerCreate}
       >
-        <CreateProduct />
+        <CreateProduct
+          _onCloseModal={() => _onCloseDrawerCreate()}
+          sizePage={sizePage}
+        />
       </Drawer>
       <Drawer
         title="Sửa sản phẩm"
         placement="right"
         onClose={_onCloseDrawerEdit}
-        open={isDrawerEdit}
+        open={updateDrawer.modalHas}
       >
-        <EditProduct productId={'63fb2f8e678bfd92d033961a'} />
+        <EditProduct
+          productId={updateDrawer.productId}
+          _onCloseModal={() => _onCloseDrawerEdit()}
+          sizePage={sizePage}
+        />
       </Drawer>
     </MainContainer>
   );
